@@ -1,0 +1,87 @@
+model new
+model restore '[1_N]GenModel.sav'
+
+zone gridpoint initialize displacement-x 0.0
+zone gridpoint initialize displacement-y 0.0
+zone gridpoint initialize displacement-z 0.0
+
+zone gridpoint initialize velocity-x 0.0
+zone gridpoint initialize velocity-y 0.0
+zone gridpoint initialize velocity-z 0.0
+
+zone delete range group 'ZG_017'
+zone delete range group 'ZG_018'
+
+struct shell create by-zone-face element-type dkt-csth ID 10 range position-z 70.0 ; top slab of ticketHall
+struct shell create by-zone-face element-type dkt-csth ID 11 range position-z 62.3 69.9 position-x -99.0 99.0 position-y 1.0 199.0 ; side wall of ticketHall
+struct shell create by-zone-face element-type dkt-csth ID 12 range position-z 62.0 62.3 position-x -99.0 99.0 position-y 1.0 199.0 ; middle slab of ticketHall
+
+zone delete range group 'ZG_020'
+zone delete range group 'ZG_019'
+
+struct shell create by-zone-face element-type dkt-csth ID 11 range position-z 54.46 62.3 position-x -99.0 99.0 position-y 1.0 199.0 ; side wall of ticketHall
+
+zone face hide on
+zone separate by-zone range-1 group 'ZG_016'
+
+zone face group 'shaft_outside' range group 'ZG_016' not 
+zone delete range group 'ZG_016' 
+
+struct shell create by-zone-face element-type dkt-csth ID 13 range position-z 54.46 use-hidden ; bottom slab of ticketHall
+;
+struct shell property density 2300 thickness 0.4 isotropic 20E9 0.2 ; range id 10 ;
+
+zone face hide on
+zone delete range group 'ZG_014'
+zone delete range group 'ZG_011'
+;zone delete range group 'pcc'
+zone face group 'concourseVault'
+;
+zone face hide on
+zone delete range group 'ZG_009'
+zone delete range group 'ZG_012'
+zone delete range group 'ZG_013'
+zone delete range group 'ZG_015'
+zone face group 'corridor'
+
+zone face hide on
+zone delete range group 'ZG_010'
+zone face group 'emergencyEvacuationTunnel'
+
+zone face hide on
+zone delete range group 'ZG_007'
+zone face group 'mainTunnelLine'
+
+zone face hide on
+zone delete range group 'ZG_008'
+zone face group 'mainPlatformTunnel'
+zone face hide off 
+
+model save '[2_N]ConTunnel.sav'
+
+;pause
+
+
+;zone face hide on
+
+;zone delete range group 'ZG_014'
+;zone delete range group 'ZG_011'
+;zone delete range group 'ZG_013'
+;zone delete range group 'ZG_015'
+
+;zone delete range group 'ZG_007'
+;zone delete range group 'ZG_008'
+;zone delete range group 'ZG_009'
+;zone delete range group 'ZG_010'
+;zone delete range group 'ZG_012'
+
+;struct shell create by-zone-face ID 30 ; All of the tunnel
+
+;zone face hide off
+
+;struct shell create by-zone-face ID 40 range group 'shaft_outside' ; All of the tunnel
+
+;model save '[2_N]ConTunnel.sav'
+
+
+
